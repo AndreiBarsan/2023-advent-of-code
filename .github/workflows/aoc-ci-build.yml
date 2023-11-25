@@ -1,0 +1,21 @@
+name: AoC '22 Rust Build
+on: [push]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
+      - name: Build
+        run: cargo build --verbose
+      - name: Test
+        run: cargo test --verbose
+      - name: Check formatting
+        run: cargo fmt -- --check
+      - name: Clippy analysis
+        run: cargo clippy
