@@ -10,14 +10,19 @@
 
 ## Running the Code
 
-Assuming [Cargo](https://doc.rust-lang.org/rust-by-example/cargo.html) has been set up, to run a problem, simply use
-the following:
+The following instructions set up Torch support, albeit without GPU by default. They are geared towards Apple Silicon, though they should work OK on x86 as well.
 
+ 1. Set up [Cargo](https://doc.rust-lang.org/rust-by-example/cargo.html)
+ 2. Set up an Anaconda environment and activate it.
+ 3. Install PyTorch: `conda install pytorch::pytorch torchvision torchaudio -c pytorch`
+    * Do not enable `LIBTORCH_USE_PYTORCH`.
+
+ 4.. no you can finally build run
 ```
 cargo run --release --bin <XX_problem>
 ```
 
-The above should automatically build the code with its dependencies, and run the appropriate problem.
+Special thanks to [this repo](https://github.com/ssoudan/tch-m1) for a simple example of running Torch and its Rust bindings!
 
 ## See Also
 
