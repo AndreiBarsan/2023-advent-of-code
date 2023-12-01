@@ -24,25 +24,25 @@ fn parse_until_digit_or_end(line: &str, start_idx: usize) -> usize {
         .unwrap_or(line.len())
 }
 
-fn map_to_digit(line_chunk: &str) -> Option<(i32, usize)> {
+fn map_to_digit(line_chunk: &str) -> Option<i32> {
     if line_chunk.starts_with("one") {
-        Some((1, 3))
+        Some(1)
     } else if line_chunk.starts_with("two") {
-        Some((2, 3))
+        Some(2)
     } else if line_chunk.starts_with("three") {
-        Some((3, 5))
+        Some(3)
     } else if line_chunk.starts_with("four") {
-        Some((4, 4))
+        Some(4)
     } else if line_chunk.starts_with("five") {
-        Some((5, 4))
+        Some(5)
     } else if line_chunk.starts_with("six") {
-        Some((6, 3))
+        Some(6)
     } else if line_chunk.starts_with("seven") {
-        Some((7, 5))
+        Some(7)
     } else if line_chunk.starts_with("eight") {
-        Some((8, 5))
+        Some(8)
     } else if line_chunk.starts_with("nine") {
-        Some((9, 4))
+        Some(9)
     } else {
         None
     }
@@ -62,22 +62,16 @@ fn extract_code_smart(line: &str) -> i64 {
             let end_idx = parse_until_digit_or_end(line, old_idx);
 
             if end_idx > old_idx {
-                let ret = map_to_digit(&line[old_idx..end_idx]);
-                if let Some(ret) = ret {
-                    // Note we cannot advance the iterator greedily since it doesn't catch the case of "merged" words,
-                    // like "twone". In this case if we try to be clever we will miss the "one", but we should pick it
-                    // as the last digit between two and one.
-                    Some(ret.0)
-                } else {
-                    None
-                }
+                // Note we cannot fast-track the index greedily since it doesn't catch the case of "merged"  words,
+                // like "twone". In this case if we try to be clever we will miss the "one", but we should pick it
+                // as the last digit between two and one.
+                map_to_digit(&line[old_idx..end_idx])
             } else {
                 None
             }
         };
 
         if let Some(digit) = val {
-            // println!("{}", digit);
             if first_digit == 0 {
                 first_digit = digit;
             }
