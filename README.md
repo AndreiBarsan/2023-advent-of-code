@@ -6,6 +6,7 @@
 
 - [ ] Finish the first 12 days for Rust practice
 - [ ] Use tch in at least 5 problems
+- [ ] Dockerized CI with tch support for fun
 - [ ] Actually understand Rust-y implementations of cyclic data structures
 
 ## Running the Code
@@ -17,7 +18,7 @@ The following instructions set up Torch support, albeit without GPU by default. 
  3. Install PyTorch: `conda install pytorch::pytorch torchvision torchaudio -c pytorch`
     * Do not enable `LIBTORCH_USE_PYTORCH`.
 
- 4.. no you can finally build run
+ 4. Now you can finally build and run problems:
 ```
 cargo run --release --bin <XX_problem>
 ```
