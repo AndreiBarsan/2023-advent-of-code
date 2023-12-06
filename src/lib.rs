@@ -9,6 +9,12 @@ pub fn render(chars: &Vec<Vec<char>>) -> String {
         .join("\n")
 }
 
+pub fn concat_nums(nums: &Vec<usize>) -> usize {
+    let num_str = nums.iter().map(|n| n.to_string()).into_iter().join("");
+    usize::from_str_radix(&num_str, 10)
+        .expect(format!("Cannot parse to usize: {}", num_str).as_str())
+}
+
 pub fn chunk_lines_by_blank(lines: &Vec<String>) -> Vec<Vec<String>> {
     // TODO(andrei): Consider solving with iterators.
     let mut out = vec![];
