@@ -1,7 +1,4 @@
 use std::path::PathBuf;
-use std::collections::HashMap;
-
-// destination range start, the source range start, and the range length
 
 #[derive(Debug)]
 struct Rule {
@@ -29,7 +26,7 @@ struct Mapping {
 impl Mapping {
     fn apply(&self, input: usize) -> usize {
         // We can speed it up by pre-sorting the rules.
-        // Assumes only one rule can apply.
+        // Assumes only one rule can apply to an input.
         for rule in &self.rules {
             if rule.applies(input) {
                 return rule.apply(input);
@@ -92,7 +89,6 @@ fn day_05_seed(input_fpath: &PathBuf) -> (usize, usize) {
     let mut idx = 0;
     while idx < seed_ids.clone().len() {
         let start = seed_ids[idx];
-        // println!("Add range of seeds starting of {} countng {}", start, seed_ids[1]);
         for j in 0..seed_ids[idx + 1] {
             fancy_seed_ids.push(start + j);
         }
