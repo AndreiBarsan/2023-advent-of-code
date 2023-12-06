@@ -17,7 +17,9 @@ struct Symbol {
 
 impl Number {
     fn borders(&self, row: usize, col: usize) -> bool {
-        (self.row).abs_diff(row) <= 1 && col >= (self.start_idx.checked_sub(1).unwrap_or(0)) && col <= (self.end_idx + 1)
+        (self.row).abs_diff(row) <= 1
+            && col >= (self.start_idx.checked_sub(1).unwrap_or(0))
+            && col <= (self.end_idx + 1)
     }
 }
 
@@ -45,14 +47,21 @@ fn parse_schematic(lines: &str) -> (Vec<Number>, Vec<Symbol>) {
             if ch.is_digit(10) {
                 let old_col = col;
                 let (num, new_col) = parse_number(&chrs, col);
-                numbers.push(Number { value: num, row: row_idx, start_idx: old_col, end_idx: new_col - 1 });
+                numbers.push(Number {
+                    value: num,
+                    row: row_idx,
+                    start_idx: old_col,
+                    end_idx: new_col - 1,
+                });
                 col = new_col;
-            }
-            else if ch != '.' {
-                symbols.push(Symbol { row: row_idx, col, symbol: ch });
+            } else if ch != '.' {
+                symbols.push(Symbol {
+                    row: row_idx,
+                    col,
+                    symbol: ch,
+                });
                 col += 1;
-            }
-            else {
+            } else {
                 col += 1;
             }
         }
@@ -62,19 +71,31 @@ fn parse_schematic(lines: &str) -> (Vec<Number>, Vec<Symbol>) {
 }
 
 fn day_03_gear_ratios(input_fpath: &PathBuf) -> (usize, usize) {
-    let lines =
-        std::fs::read_to_string(input_fpath).expect(format!("Read input from {:?}", input_fpath).as_str());
+    let lines = std::fs::read_to_string(input_fpath)
+        .expect(format!("Read input from {:?}", input_fpath).as_str());
 
     let (numbers, symbols) = parse_schematic(&lines);
     // println!("{:?}", numbers);
     // println!("{:?}", symbols);
     // Naive quadratic search: We can make this more efficient by only searching neighboring row symbols.
-    let valid_codes: Vec<usize> = numbers.iter().filter(|n| symbols.iter().any(|s| n.borders(s.row, s.col))).map(|n| n.value).collect();
+    let valid_codes: Vec<usize> = numbers
+        .iter()
+        .filter(|n| symbols.iter().any(|s| n.borders(s.row, s.col)))
+        .map(|n| n.value)
+        .collect();
     // println!("{:?}", valid_codes);
     let part_one_sol = valid_codes.iter().sum();
 
-    let gear_ids = symbols.iter().filter(|s| s.symbol == '*')
-        .map(|s| numbers.iter().filter(|n| n.borders(s.row, s.col)).map(|n| *n).collect::<Vec<Number>>())
+    let gear_ids = symbols
+        .iter()
+        .filter(|s| s.symbol == '*')
+        .map(|s| {
+            numbers
+                .iter()
+                .filter(|n| n.borders(s.row, s.col))
+                .map(|n| *n)
+                .collect::<Vec<Number>>()
+        })
         .filter(|matched_numbers| matched_numbers.len() == 2)
         .map(|matched_numbers| matched_numbers[0].value * matched_numbers[1].value)
         .sum();
@@ -82,14 +103,10 @@ fn day_03_gear_ratios(input_fpath: &PathBuf) -> (usize, usize) {
     (part_one_sol, gear_ids)
 }
 
-
 fn main() {
     println!(
         "{:?}",
         day_03_gear_ratios(&PathBuf::from("input/03-demo.txt"))
     );
-    println!(
-        "{:?}",
-        day_03_gear_ratios(&PathBuf::from("input/03.txt"))
-    );
+    println!("{:?}", day_03_gear_ratios(&PathBuf::from("input/03.txt")));
 }

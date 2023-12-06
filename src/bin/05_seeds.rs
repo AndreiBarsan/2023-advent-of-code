@@ -4,7 +4,7 @@ use std::path::PathBuf;
 struct Rule {
     dst_start: usize,
     src_start: usize,
-    length: usize
+    length: usize,
 }
 
 impl Rule {
@@ -20,7 +20,7 @@ impl Rule {
 
 #[derive(Debug)]
 struct Mapping {
-    rules: Vec<Rule>
+    rules: Vec<Rule>,
 }
 
 impl Mapping {
@@ -44,7 +44,10 @@ fn parse_into_mapping(lines: &Vec<&str>, start_idx: usize) -> (Mapping, usize) {
         if lines[cur_idx].trim().len() < 1 {
             break;
         }
-        let numbers: Vec<usize> = lines[cur_idx].split(' ').map(|nr| usize::from_str_radix(nr, 10).expect("")).collect();
+        let numbers: Vec<usize> = lines[cur_idx]
+            .split(' ')
+            .map(|nr| usize::from_str_radix(nr, 10).expect(""))
+            .collect();
         rules.push(Rule {
             dst_start: numbers[0],
             src_start: numbers[1],
@@ -56,13 +59,16 @@ fn parse_into_mapping(lines: &Vec<&str>, start_idx: usize) -> (Mapping, usize) {
     (Mapping { rules }, cur_idx)
 }
 
-
 fn day_05_seed(input_fpath: &PathBuf) -> (usize, usize) {
-    let in_txt = std::fs::read_to_string(input_fpath).expect(format!("Read input from {:?}", input_fpath).as_str());
+    let in_txt = std::fs::read_to_string(input_fpath)
+        .expect(format!("Read input from {:?}", input_fpath).as_str());
     let lines: Vec<&str> = in_txt.split("\n").collect();
 
     let seed_line = lines[0].strip_prefix("seeds: ").expect("");
-    let seed_ids: Vec<usize> = seed_line.split(' ').map(|nr| usize::from_str_radix(nr, 10).expect("")).collect();
+    let seed_ids: Vec<usize> = seed_line
+        .split(' ')
+        .map(|nr| usize::from_str_radix(nr, 10).expect(""))
+        .collect();
     println!("{:?}", seed_ids);
 
     let (seed_to_soil, next_idx) = parse_into_mapping(&lines, 3);
@@ -76,7 +82,9 @@ fn day_05_seed(input_fpath: &PathBuf) -> (usize, usize) {
     // Part one goal: find the lowest location number that corresponds to any of the initial seeds.
     let mut min_outcome = usize::MAX;
     for seed in seed_ids.clone() {
-        let outcome = hum_to_loc.apply(temp_to_hum.apply(lig_to_temp.apply(wat_to_lig.apply(fer_to_wat.apply(soil_to_fer.apply(seed_to_soil.apply(seed)))))));
+        let outcome = hum_to_loc.apply(temp_to_hum.apply(lig_to_temp.apply(
+            wat_to_lig.apply(fer_to_wat.apply(soil_to_fer.apply(seed_to_soil.apply(seed)))),
+        )));
         if outcome < min_outcome {
             min_outcome = outcome;
         }
@@ -98,7 +106,9 @@ fn day_05_seed(input_fpath: &PathBuf) -> (usize, usize) {
     let mut min_outcome2 = usize::MAX;
     println!("Starting big crunch over {:?} ids", fancy_seed_ids.len());
     for seed in fancy_seed_ids {
-        let outcome = hum_to_loc.apply(temp_to_hum.apply(lig_to_temp.apply(wat_to_lig.apply(fer_to_wat.apply(soil_to_fer.apply(seed_to_soil.apply(seed)))))));
+        let outcome = hum_to_loc.apply(temp_to_hum.apply(lig_to_temp.apply(
+            wat_to_lig.apply(fer_to_wat.apply(soil_to_fer.apply(seed_to_soil.apply(seed)))),
+        )));
         if outcome < min_outcome2 {
             min_outcome2 = outcome;
         }
