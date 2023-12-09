@@ -2,17 +2,18 @@
 
 use itertools::Itertools;
 
-pub fn render(chars: &Vec<Vec<char>>) -> String {
+pub fn render(chars: &[Vec<char>]) -> String {
     chars
         .iter()
         .map(|row| row.iter().collect::<String>())
         .join("\n")
 }
 
-pub fn concat_nums(nums: &Vec<usize>) -> usize {
-    let num_str = nums.iter().map(|n| n.to_string()).into_iter().join("");
-    usize::from_str_radix(&num_str, 10)
-        .expect(format!("Cannot parse to usize: {}", num_str).as_str())
+pub fn concat_nums(nums: &[usize]) -> usize {
+    let num_str = nums.iter().map(|n| n.to_string()).join("");
+    num_str
+        .parse::<usize>()
+        .unwrap_or_else(|_| panic!("Cannot parse to usize: {}", num_str))
 }
 
 pub fn chunk_lines_by_blank(lines: &Vec<String>) -> Vec<Vec<String>> {

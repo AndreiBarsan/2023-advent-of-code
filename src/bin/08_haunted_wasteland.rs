@@ -55,7 +55,7 @@ fn day_08_haunted_wasteland(input_fpath: &PathBuf) -> (usize, usize) {
 
     let mut multipos: Vec<&Location> = locations
         .values()
-        .filter(|l| l.name.ends_with("A"))
+        .filter(|l| l.name.ends_with('A'))
         .collect();
     let n_ghosts = multipos.len();
     println!("{:?}", multipos);
@@ -85,7 +85,7 @@ fn day_08_haunted_wasteland(input_fpath: &PathBuf) -> (usize, usize) {
     let part_one_answer = steps;
     let part_two_answer = counts
         .into_iter()
-        .reduce(|l, r| l * r / (&gcdusize(l, r)))
+        .reduce(|l, r| l * r / gcdusize(l, r))
         .expect("");
 
     (part_one_answer, part_two_answer)

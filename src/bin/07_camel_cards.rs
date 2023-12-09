@@ -115,7 +115,7 @@ fn parse_card_bid<'a>(line: &'a str) -> (Card<'a>, u64) {
 fn day_07_camel_cards(input_fpath: &PathBuf) -> (usize, usize) {
     let in_txt = std::fs::read_to_string(input_fpath)
         .expect(format!("Read input from {:?}", input_fpath).as_str());
-    let lines: Vec<&str> = in_txt.split("\n").collect();
+    let lines: Vec<&str> = in_txt.split('\n').collect();
     let card_bids: Vec<(Card, u64)> = lines.iter().map(|l| parse_card_bid(l)).collect();
     let mut tiers: Vec<Vec<(&Card, u64)>> = Vec::new();
     for _ in 0..7 {
@@ -126,7 +126,7 @@ fn day_07_camel_cards(input_fpath: &PathBuf) -> (usize, usize) {
     }
     let mut all: Vec<(&Card, u64)> = Vec::new();
     for tier in tiers.iter_mut().rev() {
-        tier.sort_by(|l, r| l.0.cmp_joker(&r.0, false));
+        tier.sort_by(|l, r| l.0.cmp_joker(r.0, false));
         let mut tc = tier.clone();
         all.append(&mut tc);
     }

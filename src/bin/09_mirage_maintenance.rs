@@ -1,20 +1,20 @@
 use std::path::PathBuf;
 
 fn parse_seq(line: &str) -> Vec<i64> {
-    line.split(" ")
+    line.split(' ')
         .map(|n_str| {
-            i64::from_str_radix(n_str, 10).unwrap_or_else(|_| panic!("Invalid number: {}", n_str))
+            n_str.parse::<i64>().unwrap_or_else(|_| panic!("Invalid number: {}", n_str))
         })
         .collect()
 }
 
-fn derivative(seq: &Vec<i64>) -> Vec<i64> {
+fn derivative(seq: &[i64]) -> Vec<i64> {
     seq.windows(2).map(|w| w[1] - w[0]).collect()
 }
 
 fn day_09_mirage_maintenance(input_fpath: &PathBuf) -> (i64, i64) {
     let in_txt = std::fs::read_to_string(input_fpath)
-        .expect(format!("Read input from {:?}", input_fpath).as_str());
+        .unwrap_or_else(|_| panic!("Read input from {:?}", input_fpath));
     let sequences: Vec<Vec<i64>> = in_txt.split_terminator('\n').map(parse_seq).collect();
 
     let mut predictions = vec![];
@@ -28,9 +28,7 @@ fn day_09_mirage_maintenance(input_fpath: &PathBuf) -> (i64, i64) {
             let all_zeros = last
                 .iter()
                 .filter(|x| **x != 0i64)
-                .collect::<Vec<&i64>>()
-                .len()
-                == 0;
+                .collect::<Vec<&i64>>().is_empty();
 
             if all_zeros {
                 break;
