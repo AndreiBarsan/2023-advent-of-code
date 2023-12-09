@@ -1,4 +1,4 @@
-use std::{path::PathBuf, collections::HashMap};
+use std::{collections::HashMap, path::PathBuf};
 
 #[derive(Debug)]
 struct Location {
@@ -21,14 +21,17 @@ fn parse_location(line: &&str) -> Location {
     Location { name, left, right }
 }
 
-
 fn day_08_haunted_wasteland(input_fpath: &PathBuf) -> (usize, usize) {
     let in_txt = std::fs::read_to_string(input_fpath)
         .expect(format!("Read input from {:?}", input_fpath).as_str());
     let lines: Vec<&str> = in_txt.split_terminator("\n").collect();
 
     let lr_steps: Vec<char> = lines[0].chars().collect();
-    let locations: HashMap<String, Location> = lines[2..].iter().map(parse_location).map(|l| (l.name.clone(), l)).collect();
+    let locations: HashMap<String, Location> = lines[2..]
+        .iter()
+        .map(parse_location)
+        .map(|l| (l.name.clone(), l))
+        .collect();
 
     // TODO(andrei): Clean up code and add tests.
     // let mut pos = &locations["AAA"];
@@ -50,7 +53,10 @@ fn day_08_haunted_wasteland(input_fpath: &PathBuf) -> (usize, usize) {
     //     sidx = (sidx + 1) % lr_steps.len();
     // }
 
-    let mut multipos: Vec<&Location> = locations.values().filter(|l| l.name.ends_with("A")).collect();
+    let mut multipos: Vec<&Location> = locations
+        .values()
+        .filter(|l| l.name.ends_with("A"))
+        .collect();
     let n_ghosts = multipos.len();
     println!("{:?}", multipos);
 
@@ -66,8 +72,7 @@ fn day_08_haunted_wasteland(input_fpath: &PathBuf) -> (usize, usize) {
 
             if lr_steps[sidx] == 'L' {
                 pp = &locations[&pp.left];
-            }
-            else {
+            } else {
                 pp = &locations[&pp.right];
             }
 
@@ -77,10 +82,11 @@ fn day_08_haunted_wasteland(input_fpath: &PathBuf) -> (usize, usize) {
         counts.push(steps2);
     }
 
-
     let part_one_answer = steps;
-    let part_two_answer = counts.into_iter()
-        .reduce(|l, r| l * r / (&gcdusize(l, r))).expect("");
+    let part_two_answer = counts
+        .into_iter()
+        .reduce(|l, r| l * r / (&gcdusize(l, r)))
+        .expect("");
 
     (part_one_answer, part_two_answer)
 }
@@ -90,18 +96,24 @@ pub fn gcdusize(n: usize, m: usize) -> usize {
 }
 
 pub fn gcd(mut n: u64, mut m: u64) -> u64 {
-  assert!(n != 0 && m != 0);
-  while m != 0 {
-    if m < n {
-      std::mem::swap(&mut m, &mut n);
+    assert!(n != 0 && m != 0);
+    while m != 0 {
+        if m < n {
+            std::mem::swap(&mut m, &mut n);
+        }
+        m %= n;
     }
-    m %= n;
-  }
-  n
+    n
 }
 
 fn main() {
     // println!("{:?}", day_08_tbd(&PathBuf::from("input/08-demo-01.txt")));
-    println!("{:?}", day_08_haunted_wasteland(&PathBuf::from("input/08-demo-02.txt")));
-    println!("{:?}", day_08_haunted_wasteland(&PathBuf::from("input/08.txt")));
+    println!(
+        "{:?}",
+        day_08_haunted_wasteland(&PathBuf::from("input/08-demo-02.txt"))
+    );
+    println!(
+        "{:?}",
+        day_08_haunted_wasteland(&PathBuf::from("input/08.txt"))
+    );
 }
