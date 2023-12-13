@@ -1,6 +1,5 @@
 use std::path::PathBuf;
 
-
 struct Universe {
     galaxies: Vec<(usize, usize)>
 }
@@ -97,7 +96,6 @@ fn main() {
         "{:?}",
         day_11_cosmic_expansion(&PathBuf::from("input/11-demo.txt"))
     );
-    // too high: 790_195_502_522
     println!(
         "{:?}",
         day_11_cosmic_expansion(&PathBuf::from("input/11.txt"))
