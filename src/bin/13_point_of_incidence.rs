@@ -1,7 +1,7 @@
 use std::path::PathBuf;
-// use std::collections::hash_map::DefaultHasher;
 
 
+/// Returns whether there is a mirror between 'col' and 'col + 1' and whether a smudge was consumed.
 fn reflects_along_col(map: &[Vec<char>], col: usize, original_smudge_available: bool) -> (bool, bool) {
     let n_cols = map[0].len() as i64;
     let n_rows = map.len() as i64;
@@ -150,14 +150,8 @@ fn day_13_point_of_incidence(input_fpath: &PathBuf) -> (usize, usize) {
     let mut score = 0;
     let mut score_part_two = 0;
     for map in maps {
-        println!("\n\nNew map.\n\n");
-        // let n_rows = map.len();
-        // let n_cols = map[0].len();
-
         let ver_line = find_ver_line(&map, false);
         let hor_line = find_hor_line(&map, false);
-
-        // println!("{ver_line} {hor_line}");
 
         score += 100 * hor_line + ver_line;
 
@@ -165,10 +159,6 @@ fn day_13_point_of_incidence(input_fpath: &PathBuf) -> (usize, usize) {
         let hor_line_smud = find_hor_line(&map, true);
 
         score_part_two += 100 * hor_line_smud + ver_line_smud;
-
-        // let row_hashes = (0..n_rows).map(|row_idx| {
-        //     map[row_idx].hash(&mut s);
-        // })
     }
 
     let part_one_answer: usize = score as usize;
