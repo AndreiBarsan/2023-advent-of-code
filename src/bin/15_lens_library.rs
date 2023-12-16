@@ -123,11 +123,8 @@ fn main() {
         "{:?}",
         day_15_lens_library(&PathBuf::from("input/15-demo.txt"))
     );
-    // 462209 is not good
     println!(
         "{:?}",
         day_15_lens_library(&PathBuf::from("input/15.txt"))
     );
 }
-
-

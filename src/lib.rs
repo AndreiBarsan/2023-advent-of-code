@@ -33,3 +33,11 @@ pub fn chunk_lines_by_blank(lines: &Vec<String>) -> Vec<Vec<String>> {
 
     out
 }
+
+/// Reads a file, assumed to hold files of identical lengths, into a vector of vectors.
+fn read_to_char_grid(input_fpath: &PathBuf) -> Vec<Vec<char>> {
+    let in_txt = std::fs::read_to_string(input_fpath)
+        .unwrap_or_else(|_| panic!("Read input from {:?}", input_fpath));
+    let rows = in_txt.split_terminator('\n');
+    rows.map(|s| s.chars().collect()).collect()
+}
