@@ -115,17 +115,9 @@ impl Platform {
 }
 
 
-// XXX(andrei): Move this to common utils.
-fn read_to_char_grid(input_fpath: &PathBuf) -> Vec<Vec<char>> {
-    let in_txt = std::fs::read_to_string(input_fpath)
-        .unwrap_or_else(|_| panic!("Read input from {:?}", input_fpath));
-    let rows = in_txt.split_terminator('\n');
-    rows.map(|s| s.chars().collect()).collect()
-}
-
 
 fn day_14_parabolic_reflector_dish(input_fpath: &PathBuf) -> (usize, usize) {
-    let platform = Platform { rocks: read_to_char_grid(input_fpath) };
+    let platform = Platform { rocks: aoc23::read_to_char_grid(input_fpath) };
 
     let mut north_tilt_platform = platform.clone();
     north_tilt_platform.roll_up();
