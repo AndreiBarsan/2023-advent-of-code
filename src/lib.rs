@@ -1,12 +1,10 @@
 // A collection of common AoC helpers.
 
 use itertools::Itertools;
+use std::path::PathBuf;
 
 pub fn render(chars: &[Vec<char>]) -> String {
-    chars
-        .iter()
-        .map(|row| row.iter().collect::<String>())
-        .join("\n")
+    chars.iter().map(|row| row.iter().collect::<String>()).join("\n")
 }
 
 pub fn concat_nums(nums: &[usize]) -> usize {
@@ -35,9 +33,8 @@ pub fn chunk_lines_by_blank(lines: &Vec<String>) -> Vec<Vec<String>> {
 }
 
 /// Reads a file, assumed to hold files of identical lengths, into a vector of vectors.
-fn read_to_char_grid(input_fpath: &PathBuf) -> Vec<Vec<char>> {
-    let in_txt = std::fs::read_to_string(input_fpath)
-        .unwrap_or_else(|_| panic!("Read input from {:?}", input_fpath));
+pub fn read_to_char_grid(input_fpath: &PathBuf) -> Vec<Vec<char>> {
+    let in_txt = std::fs::read_to_string(input_fpath).unwrap_or_else(|_| panic!("Read input from {:?}", input_fpath));
     let rows = in_txt.split_terminator('\n');
     rows.map(|s| s.chars().collect()).collect()
 }
