@@ -60,9 +60,8 @@ fn handle_cmd(map: &[Vec<char>], cmd: &(usize, usize, Dir)) -> Vec<(usize, usize
 }
 
 fn propagate_light(in_contraption: &[Vec<char>], start_row: usize, start_col: usize, start_dir: Dir) -> usize {
-    let cur = in_contraption.clone();
-    let n_rows = cur.len();
-    let n_cols = cur[0].len();
+    let n_rows = in_contraption.len();
+    let n_cols = in_contraption[0].len();
 
     let mut has_down_beam: Vec<Vec<bool>> = Vec::new();
     let mut has_up_beam: Vec<Vec<bool>> = Vec::new();
@@ -83,7 +82,7 @@ fn propagate_light(in_contraption: &[Vec<char>], start_row: usize, start_col: us
     has_right_beam[start_row][start_col] = true;
 
     while let Some(cmd) = queue.pop() {
-        let next = handle_cmd(&cur, &cmd);
+        let next = handle_cmd(in_contraption, &cmd);
         for (r, c, dir) in &next {
             match dir {
                 Dir::Up => {
