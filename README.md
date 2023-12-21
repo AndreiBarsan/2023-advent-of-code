@@ -14,11 +14,12 @@
 The following instructions set up Torch support, albeit without GPU by default. They are geared towards Apple Silicon, though they should work OK on x86 as well.
 
  1. Set up [Cargo](https://doc.rust-lang.org/rust-by-example/cargo.html)
- 2. Set up an Anaconda environment and activate it.
- 3. Install PyTorch: `conda install pytorch::pytorch torchvision torchaudio -c pytorch`
+ 2. Enable `nightly` Rust with `rustup`, since the project needs features currently only on nightly, like benchmarking support.
+ 3. Set up a Python Anaconda environment and activate it.
+ 4. Install PyTorch in this environment: `conda install pytorch::pytorch torchvision torchaudio -c pytorch`
     * Do not enable `LIBTORCH_USE_PYTORCH`.
 
- 4. Now you can finally build and run problems:
+ 5. Now you can finally build and run problems:
 ```
 cargo run --release --bin <XX_problem>
 ```
