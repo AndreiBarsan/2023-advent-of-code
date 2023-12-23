@@ -1,5 +1,6 @@
 // A collection of common AoC helpers.
 
+use anyhow::Context;
 use itertools::Itertools;
 use std::path::PathBuf;
 
@@ -37,4 +38,32 @@ pub fn read_to_char_grid(input_fpath: &PathBuf) -> Vec<Vec<char>> {
     let in_txt = std::fs::read_to_string(input_fpath).unwrap_or_else(|_| panic!("Read input from {:?}", input_fpath));
     let rows = in_txt.split_terminator('\n');
     rows.map(|s| s.chars().collect()).collect()
+}
+
+pub fn parse_color_hex(spec: &str) -> anyhow::Result<(u8, u8, u8)> {
+    let safe_chars: &str = spec.trim_start_matches("#");
+    let r = u8::from_str_radix(&safe_chars[0..2], 16).context("R")?;
+    let g = u8::from_str_radix(&safe_chars[2..4], 16).context("G")?;
+    let b = u8::from_str_radix(&safe_chars[4..6], 16).context("B")?;
+    Ok((r, g, b))
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_parse_color_hex_nominal() -> anyhow::Result<()> {
+        assert_eq!((255, 255, 255), parse_color_hex("#FFFFFF")?);
+        assert_eq!((255, 0, 255), parse_color_hex("#FF00FF")?);
+        assert_eq!((255, 0, 255), parse_color_hex("FF00FF")?);
+        assert_eq!((0, 0, 0), parse_color_hex("000000")?);
+        assert_eq!((202, 161, 115), parse_color_hex("caa173")?);
+        Ok(())
+    }
+
+    #[test]
+    fn test_parse_color_hex_error() {
+        assert!(parse_color_hex("GG1212").is_err());
+    }
 }
