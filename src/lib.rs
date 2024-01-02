@@ -42,9 +42,9 @@ pub fn read_to_char_grid(input_fpath: &PathBuf) -> Vec<Vec<char>> {
 
 pub fn parse_color_hex(spec: &str) -> anyhow::Result<(u8, u8, u8)> {
     let safe_chars: &str = spec.trim_start_matches("#");
-    let r = u8::from_str_radix(&safe_chars[0..2], 16).context("R")?;
-    let g = u8::from_str_radix(&safe_chars[2..4], 16).context("G")?;
-    let b = u8::from_str_radix(&safe_chars[4..6], 16).context("B")?;
+    let r = u8::from_str_radix(&safe_chars[0..2], 16).with_context(|| format!("R from {spec}"))?;
+    let g = u8::from_str_radix(&safe_chars[2..4], 16).with_context(|| format!("G from {spec}"))?;
+    let b = u8::from_str_radix(&safe_chars[4..6], 16).with_context(|| format!("B from {spec}"))?;
     Ok((r, g, b))
 }
 
