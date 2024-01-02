@@ -1,11 +1,10 @@
-/// AoC 2023 Day 14 - Parabolic Reflector Dish
-
-use std::path::PathBuf;
 use std::fmt;
+/// AoC 2023 Day 14 - Parabolic Reflector Dish
+use std::path::PathBuf;
 
 #[derive(Clone)]
 struct Platform {
-    rocks: Vec<Vec<char>>
+    rocks: Vec<Vec<char>>,
 }
 
 impl fmt::Display for Platform {
@@ -26,11 +25,15 @@ impl Platform {
 
     fn load_score(&self) -> usize {
         let n_rows = self.n_rows();
-        self.rocks.iter().enumerate().map(|(row_idx, row)| {
-            let factor = n_rows - row_idx;
-            let n_rocks = row.iter().filter(|ch| **ch == 'O').count();
-            factor * n_rocks
-        }).sum()
+        self.rocks
+            .iter()
+            .enumerate()
+            .map(|(row_idx, row)| {
+                let factor = n_rows - row_idx;
+                let n_rocks = row.iter().filter(|ch| **ch == 'O').count();
+                factor * n_rocks
+            })
+            .sum()
     }
 
     fn roll_up(&mut self) -> () {
@@ -110,14 +113,12 @@ impl Platform {
         // println!("\nAfter right: {}", self);
         // println!("***");
     }
-
-
 }
 
-
-
 fn day_14_parabolic_reflector_dish(input_fpath: &PathBuf) -> (usize, usize) {
-    let platform = Platform { rocks: aoc23::read_to_char_grid(input_fpath) };
+    let platform = Platform {
+        rocks: aoc23::read_to_char_grid(input_fpath),
+    };
 
     let mut north_tilt_platform = platform.clone();
     north_tilt_platform.roll_up();
@@ -151,8 +152,7 @@ fn day_14_parabolic_reflector_dish(input_fpath: &PathBuf) -> (usize, usize) {
     let period = bg - sm;
     if readings[sm] == readings[bg] && readings[sm - 1] == readings[bg - 1] {
         println!("Found loop of size {period}");
-    }
-    else {
+    } else {
         panic!("Could not identify system steady state. Try simulating more seed steps.")
     }
 
@@ -167,9 +167,5 @@ fn main() {
         "{:?}",
         day_14_parabolic_reflector_dish(&PathBuf::from("input/14-demo.txt"))
     );
-    // 100272 is too high
-    println!(
-        "{:?}",
-        day_14_parabolic_reflector_dish(&PathBuf::from("input/14.txt"))
-    );
+    println!("{:?}", day_14_parabolic_reflector_dish(&PathBuf::from("input/14.txt")));
 }
